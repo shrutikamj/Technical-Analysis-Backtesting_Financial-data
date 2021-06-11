@@ -45,8 +45,7 @@ View(NSEI)
 
 #Trade indicators-
 #MOVING AVERAGE -
-#if the short-term 20-day moving average goes above the long-term 50-day moving average, 
-#it indicates an upward price trend and generates a buy signal. 
+#if the short-term 20-day moving average goes above the long-term 50-day moving average, it indicates an upward price trend and generates a buy signal. 
 #The opposite is true for a sell signal.
 #SMA cyan = 50 days and red=20 days MA
 

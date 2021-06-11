@@ -173,8 +173,3 @@ kable(table.DownsideRisk(returns), caption = "Downside Risk Table")
 
 # Performance Summary Chart
 charts.PerformanceSummary(returns, main = "Performance Summary Chart of Nifty 50",)
-
-chart.RiskReturnScatter(returns)
-
-Drawdowns(returns, geometric = TRUE)
-findDrawdowns(returns, geometric = TRUE)

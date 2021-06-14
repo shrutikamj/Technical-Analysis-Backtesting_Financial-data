@@ -61,21 +61,10 @@ legend('left', col = c('green','red','cyan'),
        legend = c('NIFTY 50','SMA20','SMA50'), lty = 1, bty = 'n',
        text.col = 'white', cex = 0.5)
 
-#2- WPR -
 
-wpr_nifty <- WPR(HLC(NSEI), n = 14)
-colnames(wpr_nifty) <- 'wpr'
-barChart(NSEI, subset = '2020::2021',theme = 'white')
-addWPR(n = 14)
-
-#3-BBands-
+#2-Bollinger Bands-
 chartSeries(NSEI, subset = '2020::2021', theme = "white", TA = NULL)
 addBBands(n=20, sd=2)
-
-#4 MACD -
-chartSeries(NSEI, subset = '2020::2021', theme = "white")
-addMACD(fast=12,slow=26,signal=9)
-
 
 #Creating Trade Signals -
 #1. SMA -
@@ -104,22 +93,6 @@ which(sma_nifty_ts==1)
 which(sma_nifty_ts == -1)
 
 
-#2- WPR -
-wpr_nifty_ts <- Lag(
-  ifelse(Lag(wpr_nifty) > 0.8 & wpr_nifty < 0.8,1,
-         ifelse(Lag(wpr_nifty) > 0.2 & wpr_nifty < 0.2,-1,0)))
-
-wpr_nifty_ts[is.na(wpr_nifty_ts)] <- 0
-
-which(wpr_nifty_ts ==1)
-which(wpr_nifty_ts == -1)
-
-chartSeries(NSEI,
-            type = 'line',
-            theme=chartTheme('white'))
-addTA(sma_nifty_ts,type='S',col='red')
-addTA(wpr_nifty_ts, type = 's', col = 'blue')
-
 #Trading Strategies and checking the signals created -
 #1 SMA
 sma_nifty_strategy <- ifelse(sma_nifty_ts > 1,0,1)
@@ -130,17 +103,6 @@ sma_nifty_strategy[is.na(sma_nifty_strategy)] <- 1
 sma_nifty_strategycomp <- cbind(sma20_nifty, sma50_nifty, sma_nifty_ts, sma_nifty_strategy)
 colnames(sma_nifty_strategycomp) <- c('SMA(20)','SMA(50)','SMA SIGNAL','SMA POSITION')
 
-#2 WPR-
-wpr_nifty_strategy <- ifelse(wpr_nifty_ts > 1,0,1)
-for (i in 1 : length(Cl(NSEI))) {
-  wpr_nifty_strategy[i] <- ifelse(wpr_nifty_ts[i] == 1,1,ifelse(wpr_nifty_ts[i] == -1,0,wpr_nifty_strategy[i-1]))
-}
-wpr_nifty_strategy[is.na(wpr_nifty_strategy)] <- 1
-wpr_nifty_stratcomp <- cbind(wpr_nifty, wpr_nifty_ts, wpr_nifty_strategy)
-colnames(wpr_nifty_stratcomp) <- c('WPR(14)','WPR SIGNAL','WPR POSITION')
-
-View(wpr_nifty_stratcomp)
-View(sma_nifty_strategycomp)
 
 ## BACKTESTING-
 #choose the closing price of NSE data to calculate the averages
